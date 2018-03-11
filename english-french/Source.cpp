@@ -25,9 +25,9 @@ using std::ofstream;
 using std::ifstream;
 
 void get_choice() {
-	cout << "[1] english-french" << endl;
-	cout << "[2] french-english" << endl;
-	cout << "choice: ";
+	cout << "[1] English-french" << endl;
+	cout << "[2] French-english" << endl;
+	cout << "[x] Exit" << endl;
 }
 
 int main() {
@@ -39,13 +39,16 @@ int main() {
 
 	string line {""};
 	ifstream dictionary("english_french.txt");
-	if (dictionary.is_open())
+	if (dictionary.is_open()) {
 		while (getline(dictionary, line, ':')) {
 			english_words.push_back(line);
 			dictionary >> ws;
 			getline(dictionary, line);
 			french_words.push_back(line);
 		}
+		dictionary.close();
+	}
+		
 	else
 		cerr << "Error: Unable to open files." << endl;
 
@@ -85,7 +88,7 @@ int main() {
 				cout << "Not Good At All. Try Again." << endl;
 			else {}
 
-			if (score != 24) {
+			if (score != english_words.size()) {
 				cout << "\nMessed up words:\n" << endl;
 				for (vector<int>::iterator it = messed_up_indexes.begin(); it != messed_up_indexes.end(); ++it)
 					cout << french_words[*it] << ": " << english_words[*it] << endl;
@@ -94,6 +97,7 @@ int main() {
 			score = 0;
 		}
 			break;
+
 		case '2':
 		{
 			vector<int> messed_up_indexes;
@@ -116,7 +120,7 @@ int main() {
 				cout << "Not Good At All. Try Again." << endl;
 			else {}
 
-			if (score != 24) {
+			if (score != french_words.size()) {
 				cout << "\nMessed up words:\n" << endl;
 				for (vector<int>::iterator it = messed_up_indexes.begin(); it != messed_up_indexes.end(); ++it)
 					cout << french_words[*it] << ": " << english_words[*it] << endl;
@@ -126,9 +130,13 @@ int main() {
 		}
 		
 			break;
-		default:
+
+		case 'x':
 			cout << "\nGoodbye !" << endl;
 			return 0;
+
+		default:
+			cout << "\nPlease enter a valid choice !" << endl;
 			break;
 		}
 
