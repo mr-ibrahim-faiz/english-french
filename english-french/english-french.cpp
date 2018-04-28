@@ -104,7 +104,7 @@ vector<int> get_indexes(const string& filename, const char& period)
 }
 
 // displays scores
-void display_score(const int& score, const int& size) {
+void display_score(const size_t& score, const size_t& size) {
 	cout << "\nResults: " << score << "\\" << size << "." << endl;
 	if (score == size)
 		cout << "Perfect score !" << endl;
@@ -114,7 +114,7 @@ void display_score(const int& score, const int& size) {
 }
 
 // displays messed up words
-void display_messed_up_words(const int& score, const int& size, const vector<int>& messed_up, const vector<string>& left, const vector<string>& right) {
+void display_messed_up_words(const size_t& score, const size_t& size, const vector<int>& messed_up, const vector<string>& left, const vector<string>& right) {
 	if (score != size) {
 		cout << "\nMessed up words:\n" << endl;
 		for (unsigned i = 0; i < messed_up.size(); ++i)
@@ -131,7 +131,7 @@ void vocabulary_quiz(const vector<string>& left, const vector<string>& right, ve
 	size_t score = test_vocabulary(left, right, messed_up);
 	write_elements(messed_up, practice_filename, ios::out, sdelimiter, speriod);
 
-	int size = left.size();
+	size_t size = left.size();
 	display_score(score, size);
 	display_messed_up_words(score, size, messed_up, left, right);
 }

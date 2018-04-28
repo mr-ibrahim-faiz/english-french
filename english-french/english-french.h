@@ -24,10 +24,10 @@ void get_words(const string&);
 vector<int> get_indexes(const string&, const char&);
 
 // displays scores
-void display_score(const int&, const int&);
+void display_score(const size_t&, const size_t&);
 
 // displays messed up words
-void display_messed_up_words(const int&, const int&, const vector<int>&, const vector<string>&, const vector<string>&);
+void display_messed_up_words(const size_t&, const size_t&, const vector<int>&, const vector<string>&, const vector<string>&);
 
 // main function
 void vocabulary_quiz(const vector<string>&, const vector<string>&, vector<int>&, const string&);

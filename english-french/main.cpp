@@ -1,6 +1,8 @@
 #include "english-french.h"
 #include "ofuse.h"
 
+#include<Windows.h>
+
 #include<iostream>
 using std::cin;
 using std::cerr;
@@ -19,6 +21,9 @@ vector<int> right_messed_up;
 int main() 
 try
 {
+	SetConsoleCP(1252);
+	SetConsoleOutputCP(1252);
+
 	const string filename { "english_french.txt" };
 	const string practice_filename_left { "messed_up_left.txt" };
 	const string practice_filename_right { "messed_up_right.txt" };
