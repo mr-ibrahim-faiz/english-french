@@ -7,31 +7,31 @@
 using std::cin;
 using std::cerr;
 using std::cout;
+using std::wcout;
 using std::endl;
 
 #include<stdexcept>
-using std::exception;
 using std::runtime_error;
 
-vector<string> left_words;
-vector<string> right_words;
+vector<wstring> left_words;
+vector<wstring> right_words;
 vector<int> left_messed_up;
 vector<int> right_messed_up;
 
-int main() 
+int main()
 try
 {
 	SetConsoleCP(1252);
 	SetConsoleOutputCP(1252);
 
-	const string filename { "english_french.txt" };
-	const string practice_filename_left { "messed_up_left.txt" };
-	const string practice_filename_right { "messed_up_right.txt" };
+	const string filename{ "english_french.txt" };
+	const string practice_filename_left{ "messed_up_left.txt" };
+	const string practice_filename_right{ "messed_up_right.txt" };
 	get_words(filename);
 
 	while (true) {
 		display_menu();
-		string choice { "" };
+		string choice{ "" };
 		getline(cin, choice);
 
 		if (choice == "exit" || choice == "x")
@@ -64,7 +64,7 @@ try
 		case '3':
 		{
 			cout << endl;
-			const char period { '$' };
+			const char period{ '$' };
 			left_messed_up = get_indexes(practice_filename_left, period);
 
 			if (!left_messed_up.empty())
@@ -77,7 +77,7 @@ try
 		case '4':
 		{
 			cout << endl;
-			const char period { '$' };
+			const char period{ '$' };
 			right_messed_up = get_indexes(practice_filename_right, period);
 
 			if (!right_messed_up.empty())
@@ -98,7 +98,7 @@ try
 
 	return 0;
 }
-catch (exception& e) {
+catch (runtime_error& e) {
 	cerr << "Error: " << e.what() << endl;
 	return 1;
 }

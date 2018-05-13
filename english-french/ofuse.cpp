@@ -10,11 +10,11 @@ using std::chrono::system_clock;
 using std::random_shuffle;
 
 #include<stdexcept>
-using std::exception;
+using std::runtime_error;
 
 // shuffles vector elements
 template<typename T>
-void shuffle_vector(vector<T>& vec) 
+void shuffle_vector(vector<T>& vec)
 // rearranges the elements of a vector vec randomly
 {
 	unsigned seed = (unsigned)system_clock::now().time_since_epoch().count();
@@ -33,7 +33,7 @@ void create_file_if(const string& filename)
 	file.open(filename);
 	if (!file.is_open())
 		fstream(filename, ios::out);
-	file.close();	
+	file.close();
 }
 
 // checks if a specific element is present in a vector
@@ -53,7 +53,7 @@ template bool is_present<int>(const int& x, const vector<int>& vec);
 
 // writes elements of a vector on a file
 template<typename T>
-void write_elements(const vector<T>& vec, const string& file_name, ios::fmtflags flag, const string& delimiter, const string& period)
+void write_elements(const vector<T>& vec, const string& file_name, ios_base::openmode flag, const string& delimiter, const string& period)
 // write elements of vec on file_name
 // elements are delimited by the delimiter
 // the writing is ended by the period
@@ -74,7 +74,7 @@ void write_elements(const vector<T>& vec, const string& file_name, ios::fmtflags
 		file.close();
 	}
 	else
-		throw exception("(write vector elements) unable to open file.");
+		throw runtime_error("(write vector elements) unable to open file.");
 }
 
-template void write_elements<int>(const vector<int>& vec, const string& file_name, ios::fmtflags flag, const string& delimiter, const string& period);
+template void write_elements<int>(const vector<int>& vec, const string& file_name, ios_base::openmode flag, const string& delimiter, const string& period);
