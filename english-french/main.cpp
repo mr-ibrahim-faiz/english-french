@@ -1,108 +1,80 @@
-#include "english-french.h"
-#include "ofuse.h"
-
-#include<Windows.h>
-
-#include<iostream>
-using std::cin;
-using std::cerr;
-using std::cout;
-using std::wcout;
-using std::endl;
+#include "dictionary.h"
 
 #include<stdexcept>
 using std::runtime_error;
 
-vector<wstring> left_words;
-vector<wstring> right_words;
-vector<int> left_messed_up;
-vector<int> right_messed_up;
-
 int main()
 try
 {
-	SetConsoleCP(1252);
-	SetConsoleOutputCP(1252);
+	// creates required files
+	create_file_if(dictionary_filename);
+	// create_file_if(practice_filename_left);
+	// create_file_if(practice_filename_right);
 
-	const string filename{ "english_french.txt" };
-	const string practice_filename_left{ "messed_up_left.txt" };
-	const string practice_filename_right{ "messed_up_right.txt" };
-	get_words(filename);
+	// retrieves dictionary information from file
+	Dictionary dictionary = get_words_and_translations();
+	vector<string>& words_left =  dictionary.words_left;
+	vector<string>& words_right =  dictionary.words_right;
+	
+	// displays main menu
+	display_menu();
 
-	while (true) {
-		display_menu();
-		string choice{ "" };
-		getline(cin, choice);
-
-		if (choice == "exit" || choice == "x")
-			break;
-		else if (choice.size() != 1)
-			choice = "?";
-
-		switch (choice[0])
-		{
-		case '1':
-		{
-			cout << endl;
-			if (!left_words.empty())
-				vocabulary_quiz(left_words, right_words, left_messed_up, practice_filename_left);
-			else
-				cout << "No words available." << endl;
+	// gets user's choice
+	for(string choice; getline(cin, choice);){
+		if (choice.length() != 1) choice = INVALID_CHOICE;
+		else {
+			// retrieves dictionary information from file
+			dictionary = get_words_and_translations();
 		}
-		break;
+
+		switch (choice[0]) {
+		case '1':
+			cout << newline;
+			if(!words_left.empty() && words_left.size() == words_right.size()){
+				quiz_launcher(dictionary, Dictionary::Mode::normal);
+			}
+			else {
+				if(words_left.empty()) cout << "There's not a single word to display.\n";
+				else cout << "The number of words doesn't match.\n";
+			}
+			break;
 
 		case '2':
-		{
-			cout << endl;
-			if (!right_words.empty())
-				vocabulary_quiz(right_words, left_words, right_messed_up, practice_filename_right);
-			else
-				cout << "No words available." << endl;
-		}
-		break;
+            cout << newline;
+            if(!words_left.empty() && words_left.size() == words_right.size()){
+                quiz_launcher(dictionary, Dictionary::Mode::reverse);
+            }
+            else {
+                if(words_left.empty()) cout << "There's not a single word to display.\n";
+                else cout << "The number of words doesn't match.\n";
+            }
+			break;
 
-		case '3':
-		{
-			cout << endl;
-			const char period{ '$' };
-			left_messed_up = get_indexes(practice_filename_left, period);
-
-			if (!left_messed_up.empty())
-				practice_vocabulary(left_words, right_words, left_messed_up);
-			else
-				cout << "No words available." << endl;
-		}
-		break;
-
-		case '4':
-		{
-			cout << endl;
-			const char period{ '$' };
-			right_messed_up = get_indexes(practice_filename_right, period);
-
-			if (!right_messed_up.empty())
-				practice_vocabulary(right_words, left_words, right_messed_up);
-			else
-				cout << "No words available." << endl;
-		}
-		break;
+		case exit_character:
+			break;
 
 		default:
-			cout << "\nPlease enter a valid choice !" << endl;
+			cout << "\nPlease enter a valid choice.\n";
 			break;
 		}
-		cout << endl;
+
+		if (choice[0] == exit_character)
+			break;
+		else {
+			cout << '\n';
+			display_menu();
+		}
 	}
 
-	cout << "\nGoodbye." << endl;
+	cout << "\nGoodbye !\n";
 
 	return 0;
 }
 catch (runtime_error& e) {
-	cerr << "Error: " << e.what() << endl;
+	cerr << "Error: " << e.what() << '\n';
 	return 1;
 }
 catch (...) {
-	cerr << "Error: unknown exception caught." << endl;
+	cerr << "Error: unknown exception caught." << '\n';
 	return 2;
 }
